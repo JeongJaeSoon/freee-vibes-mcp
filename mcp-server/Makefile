@@ -1,14 +1,14 @@
 .PHONY: build run stop clean
 
 build:
-	docker build -t freee-vibes-mcp .
+	docker build -t mcp-server .
 
 run:
-	docker run -i --rm freee-vibes-mcp
+	docker run -i --rm mcp-server
 
 stop:
-	docker stop freee-vibes-mcp || true
-	docker rm freee-vibes-mcp || true
+	docker stop mcp-server || true
+	docker rm mcp-server || true
 
 clean: stop
-	docker rmi freee-vibes-mcp || true
+	docker rmi mcp-server || true

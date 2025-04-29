@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "freee-vibes-mcp",
+      "name": "mcp-server",
       "dependencies": {
         "@modelcontextprotocol/sdk": "^1.10.2",
         "minimatch": "^10.0.1",

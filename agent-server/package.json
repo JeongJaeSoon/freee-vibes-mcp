@@ -1,5 +1,5 @@
 {
-  "name": "sample-mastra-app",
+  "name": "agent-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
