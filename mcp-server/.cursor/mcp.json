@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "mcp-server": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp-server"
+      ]
+    }
+  }
+}
