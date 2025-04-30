@@ -7,7 +7,7 @@ import { z } from "zod";
 
 // Create an MCP server
 export const server = new McpServer({
-  name: "Freee Vibes MCP",
+  name: "MCP Server",
   version: "1.0.0",
 });
 
