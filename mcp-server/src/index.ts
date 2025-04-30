@@ -4,6 +4,8 @@ import {
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { fetch } from "undici";
+import type { MastraResponse } from "./types/mastra.ts";
 
 // Create an MCP server
 export const server = new McpServer({
@@ -46,6 +48,64 @@ server.resource(
       },
     ],
   })
+);
+
+// Add Mastra communication tool
+server.tool(
+  "askMastra",
+  "Send a question to the Mastra server and get a response",
+  {
+    question: z.string().describe("The question to ask the Mastra server"),
+    agentId: z.string().optional().describe("The ID of the agent to use"),
+  },
+  async ({ question, agentId = "weatherAgent" }) => {
+    try {
+      const url = `http://localhost:4111/api/agents/${agentId}/generate`;
+      const request = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          messages: [question],
+        }),
+      };
+
+      const response = await fetch(url, request);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+        throw new Error(
+          `Mastra server responded with status: ${response.status}, body: ${errorText}`
+        );
+      }
+
+      const data = (await response.json()) as MastraResponse;
+      console.log("Response data:", data);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: data.text,
+          },
+        ],
+      };
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error communicating with Mastra server: ${errorMessage}`,
+          },
+        ],
+      };
+    }
+  }
 );
 
 // Start receiving messages on stdin and sending messages on stdout
