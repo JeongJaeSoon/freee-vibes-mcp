@@ -1,21 +1,63 @@
 # mcp-server
 
-To install dependencies:
+## Initialization
+
+Choose one of the following initialization methods based on your preferred environment:
+
+### Node Environment (Recommended)
+
+To initialize the Node environment (installs dependencies, builds the server, and configures MCP settings):
 
 ```bash
-bun install
+make node-init
 ```
 
-To build:
+### Docker Environment
+
+To initialize the Docker environment (builds the Docker image and configures MCP settings):
 
 ```bash
-make build
+make docker-init
 ```
 
-To run:
+## Development
+
+### Using Node (Recommended)
+
+To build and run the server using Node:
 
 ```bash
-make run
+# Build the server
+make node-build
+
+# Run the server
+make node-config
+```
+
+### Using Docker
+
+To build and run the server using Docker:
+
+```bash
+# Build the Docker image
+make docker-build
+
+# Run the Docker container
+make docker-run
+
+# Stop the Docker container
+make docker-stop
+
+# Clean up Docker resources
+make docker-clean
+```
+
+### MCP Settings
+
+The MCP settings are automatically refreshed when you run `make node-config`. If you need to manually refresh the MCP settings:
+
+```bash
+make mcp-refresh
 ```
 
 After running the server, you need to configure MCP settings:
