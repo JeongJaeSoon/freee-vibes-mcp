@@ -11,8 +11,7 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 TEMPLATES_DIR="$PROJECT_ROOT/templates/mcp"
-SERVERS_DIR="$PROJECT_ROOT/src/servers"
-SERVERS_INDEX="$SERVERS_DIR/index.ts"
+SERVERS_DIR="$PROJECT_ROOT/src/servers/mcp"
 
 # Logging functions
 log_info() {
@@ -53,15 +52,6 @@ fi
 if [ ! -d "$SERVERS_DIR" ]; then
   log_warning "Servers directory does not exist. Creating..."
   mkdir -p "$SERVERS_DIR" || handle_error "Failed to create servers directory"
-
-  # Create basic index.ts
-  cat > "$SERVERS_INDEX" << 'EOL' || handle_error "Failed to create index.ts"
-// This file exports automatically generated MCP servers.
-// It will be automatically updated when new servers are created.
-
-// Server export example:
-// export * from './example-server';
-EOL
 
   log_success "Servers directory created."
 fi
@@ -148,14 +138,6 @@ find "$SERVERS_DIR/$SERVER_NAME" -name "*.template" | while IFS= read -r templat
 
   log_info "Created: ${output_file#$SERVERS_DIR/}"
 done
-
-# Register server (update index.ts)
-if ! grep -q "export \* from './$SERVER_NAME';" "$SERVERS_INDEX"; then
-  echo "" >> "$SERVERS_INDEX" || handle_error "Failed to update index.ts"
-  echo "export * from './$SERVER_NAME';" >> "$SERVERS_INDEX" || handle_error "Failed to update index.ts"
-
-  log_success "Server registered in index.ts."
-fi
 
 echo ""
 log_success "✅ MCP server successfully created!"
