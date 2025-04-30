@@ -1,9 +1,9 @@
 {
-  "name": "mcp-server",
+  "name": "{{SERVER_NAME}}",
   "main": "build/index.js",
   "type": "module",
   "bin": {
-    "mcp-server": "./build/index.js"
+    "{{SERVER_NAME}}": "./build/index.js"
   },
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./build --target node && chmod 755 build/index.js",
