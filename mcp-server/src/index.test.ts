@@ -1,8 +1,16 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { server } from "./index.ts";
-import type { Transport } from "@modelcontextprotocol/sdk/transport.js";
+import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
+import { fetch } from "undici";
+
+type ToolResponse = {
+  content: Array<{
+    type: string;
+    text: string;
+  }>;
+};
 
 describe("getDiceRoll", () => {
   let client: Client;
@@ -103,7 +111,7 @@ describe("getDiceRoll", () => {
   });
 
   it("returns different results for multiple rolls", async () => {
-    const results = await Promise.all(
+    const results = (await Promise.all(
       Array(10)
         .fill(null)
         .map(() =>
@@ -114,15 +122,100 @@ describe("getDiceRoll", () => {
             },
           })
         )
-    );
+    )) as ToolResponse[];
 
     // Verify all results are valid
     for (const result of results) {
-      expect(result.content[0].text).toMatch(/^[1-6]$/);
+      expect(result.content[0]?.text).toMatch(/^[1-6]$/);
     }
 
     // Verify that we got at least two different results
-    const uniqueResults = new Set(results.map((r) => r.content[0].text));
+    const uniqueResults = new Set(results.map((r) => r.content[0]?.text));
     expect(uniqueResults.size).toBeGreaterThan(1);
+  });
+});
+
+describe("askMastra", () => {
+  let client: Client;
+  let clientTransport: Transport;
+  let serverTransport: Transport;
+
+  beforeEach(async () => {
+    // Create test client
+    client = new Client({
+      name: "test client",
+      version: "0.1.0",
+    });
+
+    // Create in-memory communication channel
+    [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+
+    // Connect client and server
+    await Promise.all([
+      client.connect(clientTransport),
+      server.connect(serverTransport),
+    ]);
+
+    // Mock fetch
+    vi.mock("undici", () => ({
+      fetch: vi.fn(),
+    }));
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("successfully gets response from Mastra server", async () => {
+    const mockResponse = {
+      text: "테스트 응답입니다.",
+    };
+
+    (fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockResponse),
+    });
+
+    const result = await client.callTool({
+      name: "askMastra",
+      arguments: {
+        question: "테스트 질문입니다.",
+        agentId: "testAgent",
+      },
+    });
+
+    expect(fetch).toHaveBeenCalledWith(
+      "http://localhost:4111/api/agents/testAgent/generate",
+      expect.any(Object)
+    );
+
+    expect(result).toEqual({
+      content: [
+        {
+          type: "text",
+          text: "테스트 응답입니다.",
+        },
+      ],
+    });
+  });
+
+  it("handles Mastra server error gracefully", async () => {
+    (fetch as unknown as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: () => Promise.resolve("서버 에러 발생"),
+    });
+
+    const result = await client.callTool({
+      name: "askMastra",
+      arguments: {
+        question: "테스트 질문입니다.",
+      },
+    });
+
+    const response = result as { content: Array<{ text: string }> };
+    expect(response.content[0]?.text).toContain(
+      "Error communicating with Mastra server"
+    );
   });
 });
