@@ -55,7 +55,7 @@ if [ ! -d "$SERVERS_DIR" ]; then
   mkdir -p "$SERVERS_DIR" || handle_error "Failed to create servers directory"
 
   # Create basic index.ts
-  cat > "$SERVERS_INDEX" << 'EOL'
+  cat > "$SERVERS_INDEX" << 'EOL' || handle_error "Failed to create index.ts"
 // This file exports automatically generated MCP servers.
 // It will be automatically updated when new servers are created.
 
@@ -108,7 +108,7 @@ if [ -d "$SERVERS_DIR/$SERVER_NAME" ]; then
     exit 0
   fi
   # Remove existing directory
-  rm -rf "$SERVERS_DIR/$SERVER_NAME"
+  rm -rf "${SERVERS_DIR:?}/${SERVER_NAME:?}"
 fi
 
 # Create server directory
@@ -141,18 +141,19 @@ find "$SERVERS_DIR/$SERVER_NAME" -name "*.template" | while IFS= read -r templat
       -e "s/{{SERVER_NAME_PASCAL}}/$SERVER_NAME_PASCAL/g" \
       -e "s/{{CREATION_DATE}}/$CREATION_DATE/g" \
       -e "s/{{DESCRIPTION}}/$DESCRIPTION/g" \
-      "$template_file" > "$output_file"
+      "$template_file" > "$output_file" || handle_error "Failed to process template file $template_file"
 
   # Remove template file
-  rm "$template_file"
+  rm "$template_file" || handle_error "Failed to remove template file $template_file"
 
   log_info "Created: ${output_file#$SERVERS_DIR/}"
 done
 
 # Register server (update index.ts)
 if ! grep -q "export \* from './$SERVER_NAME';" "$SERVERS_INDEX"; then
-  echo "" >> "$SERVERS_INDEX"
-  echo "export * from './$SERVER_NAME';" >> "$SERVERS_INDEX"
+  echo "" >> "$SERVERS_INDEX" || handle_error "Failed to update index.ts"
+  echo "export * from './$SERVER_NAME';" >> "$SERVERS_INDEX" || handle_error "Failed to update index.ts"
+
   log_success "Server registered in index.ts."
 fi
 
