@@ -1,10 +1,7 @@
-import {
-  McpServer,
-  ResourceTemplate,
-} from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
 import { fetch } from "undici";
+import { z } from "zod";
 import type { MastraResponse } from "./types/mastra.ts";
 
 // Create an MCP server
@@ -83,7 +80,6 @@ server.tool(
       }
 
       const data = (await response.json()) as MastraResponse;
-      console.log("Response data:", data);
 
       return {
         content: [
@@ -94,8 +90,7 @@ server.tool(
         ],
       };
     } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
       return {
         content: [
           {

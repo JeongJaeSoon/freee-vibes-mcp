@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     // Environment setup & latest features
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
@@ -26,10 +24,6 @@
     "outDir": "./build",
     "rootDir": "./src"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
-import { server } from "./index.ts";
 import type { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
 import { fetch } from "undici";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { server } from "./index.ts";
 
 type ToolResponse = {
   content: Array<{
@@ -28,10 +28,7 @@ describe("getDiceRoll", () => {
     [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
     // Connect client and server
-    await Promise.all([
-      client.connect(clientTransport),
-      server.connect(serverTransport),
-    ]);
+    await Promise.all([client.connect(clientTransport), server.connect(serverTransport)]);
   });
 
   it("returns a random dice roll result for 6-sided dice", async () => {
@@ -151,10 +148,7 @@ describe("askMastra", () => {
     [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
 
     // Connect client and server
-    await Promise.all([
-      client.connect(clientTransport),
-      server.connect(serverTransport),
-    ]);
+    await Promise.all([client.connect(clientTransport), server.connect(serverTransport)]);
 
     // Mock fetch
     vi.mock("undici", () => ({
@@ -214,8 +208,6 @@ describe("askMastra", () => {
     });
 
     const response = result as { content: Array<{ text: string }> };
-    expect(response.content[0]?.text).toContain(
-      "Error communicating with Mastra server"
-    );
+    expect(response.content[0]?.text).toContain("Error communicating with Mastra server");
   });
 });

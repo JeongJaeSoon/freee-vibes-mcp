@@ -30,7 +30,7 @@ docker-clean: docker-stop
 node-init:
 	@echo "Initializing Node environment..."
 	@mkdir -p .cursor
-	@echo '{\n  "mcpServers": {\n    "mcp-server-node": {\n      "command": "$(NODE_PATH)",\n      "args": [\n        "$(WORKSPACE_PATH)/build/index.js"\n      ]\n    }\n  }\n}' > .cursor/mcp.json
+	@echo '{\n  "mcpServers": {\n    "mcp-server-node": {\n      "command": "$(NODE_PATH)",\n      "args": ["$(WORKSPACE_PATH)/build/index.js"]\n    }\n  }\n}' > .cursor/mcp.json
 	@echo "Installing dependencies..."
 	@bun install
 	@echo "Building the server..."

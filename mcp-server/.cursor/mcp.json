@@ -2,9 +2,7 @@
   "mcpServers": {
     "mcp-server-node": {
       "command": "/Users/dev-soon/.local/share/mise/installs/node/22.15.0/bin/node",
-      "args": [
-        "/Users/dev-soon/workspace/sample/devpulse-agent/mcp-server/build/index.js"
-      ]
+      "args": ["/Users/dev-soon/workspace/sample/devpulse-agent/mcp-server/build/index.js"]
     }
   }
 }
