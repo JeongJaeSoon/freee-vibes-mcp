@@ -115,11 +115,11 @@ if [ -d "$TEMPLATES_DIR/.vscode" ]; then
 fi
 
 # Process all template files
-find "$SERVERS_DIR/$SERVER_NAME" -name "*.template" | while read template_file; do
+find "$SERVERS_DIR/$SERVER_NAME" -name "*.template" | while IFS= read -r template_file; do
   output_file="${template_file%.template}"
 
   # Replace variables
-  sed -e "s/{{SERVER_NAME}}/$SERVER_NAME/g" \
+  sed -e "s|{{SERVER_NAME}}|$SERVER_NAME|g" \
       -e "s/{{SERVER_NAME_PASCAL}}/$SERVER_NAME_PASCAL/g" \
       -e "s/{{CREATION_DATE}}/$CREATION_DATE/g" \
       -e "s/{{DESCRIPTION}}/$DESCRIPTION/g" \

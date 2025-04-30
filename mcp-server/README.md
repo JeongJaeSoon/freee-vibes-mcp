@@ -30,7 +30,7 @@ To build and run the server using Node:
 # Build the server
 make node-build
 
-# Run the server
+# Configure the server
 make node-config
 ```
 

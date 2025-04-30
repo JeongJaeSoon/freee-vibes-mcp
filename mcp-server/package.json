@@ -1,6 +1,6 @@
 {
   "name": "mcp-server",
-  "main": "src/index.ts",
+  "main": "build/index.js",
   "type": "module",
   "bin": {
     "mcp-server": "./build/index.js"

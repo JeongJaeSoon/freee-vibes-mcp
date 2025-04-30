@@ -1,8 +1,8 @@
-# {{SERVER_NAME}}
+# storybook-freee-vibes
 
-{{DESCRIPTION}}
+An MCP server for storybook-freee-vibes
 
-Created on: {{CREATION_DATE}}
+Created on: 2025-05-01
 
 ## Initialization
 
@@ -69,6 +69,6 @@ After running the server, you need to configure MCP settings:
 1. Open your IDE settings
 2. Navigate to the MCP configuration section
 3. Add a new MCP server with the following settings:
-   - Name: {{SERVER_NAME_PASCAL}}
+   - Name: UstorybookUfreeeUvibes
    - Version: 1.0.0
    - Path: The path to your built server executable

@@ -3,3 +3,5 @@
 
 // Server export example:
 // export * from './example-server';
+
+export * from './storybook-freee-vibes';
