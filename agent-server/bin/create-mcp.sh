@@ -68,12 +68,30 @@ fi
 
 # Get server name
 echo ""
+# Get server name
+echo ""
 read -p "Enter MCP server name (kebab-case recommended, e.g., my-awesome-mcp): " SERVER_NAME
+
+# Validate server name format
+validate_server_name() {
+  local name="$1"
+  if ! [[ "$name" =~ ^[a-z][a-z0-9]*(-[a-z0-9]+)*$ ]]; then
+    log_warning "Server name '$name' is not valid kebab-case."
+    log_warning "Server name should start with a lowercase letter and contain only lowercase letters, numbers, and hyphens."
+    return 1
+  fi
+  return 0
+}
 
 # Validate name
 if [ -z "$SERVER_NAME" ]; then
   log_warning "No name provided. Using 'default-mcp'."
   SERVER_NAME="default-mcp"
+else
+  # Validate the format
+  if ! validate_server_name "$SERVER_NAME"; then
+    log_warning "Continuing with the provided name, but you may encounter issues."
+  fi
 fi
 
 # Get server description
