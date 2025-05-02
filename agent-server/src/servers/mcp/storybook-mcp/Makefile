@@ -49,3 +49,8 @@ docker-init:
 mcp-refresh:
 	@jq '.mcpServers."storybook-mcp-node".command = "$(NODE_PATH)" | .mcpServers."storybook-mcp-node".args = ["$(WORKSPACE_PATH)/build/index.js"]' .cursor/mcp.json > .cursor/mcp.json.tmp
 	@mv .cursor/mcp.json.tmp .cursor/mcp.json
+
+inspector:
+	@echo "Starting inspector..."
+	@bun run build && npx @modelcontextprotocol/inspector node build/index.js
+	@echo "Inspector started!"
