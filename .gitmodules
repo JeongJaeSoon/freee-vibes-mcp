@@ -1,0 +1,3 @@
+[submodule "agent-server/src/servers/mcp/storybook-mcp/sources/vibes"]
+	path = agent-server/src/servers/mcp/storybook-mcp/sources/vibes
+	url = https://github.com/freee/vibes.git
