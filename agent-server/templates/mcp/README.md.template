@@ -72,3 +72,17 @@ After running the server, you need to configure MCP settings:
    - Name: {{SERVER_NAME_PASCAL}}
    - Version: 1.0.0
    - Path: The path to your built server executable
+
+## Inspector
+
+To start the inspector:
+
+```bash
+make inspector
+```
+
+Access the inspector at:
+
+```bash
+http://localhost:6274/
+```
