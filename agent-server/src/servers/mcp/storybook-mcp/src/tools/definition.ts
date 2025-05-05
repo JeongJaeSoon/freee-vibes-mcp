@@ -11,19 +11,42 @@ type ToolDefinition = {
   callback: ToolCallback<ZodRawShape>;
 };
 
+const storybookKeySchema = z
+  .string()
+  .describe("The identifier used to select the target Storybook instance.");
+
 export const TOOLS_DEFINITIONS: ToolDefinition[] = [
   {
     name: "list-storybook",
-    description: "Returns a list of available Storybook instances.",
+    description: "Lists all available Storybook instances that can be queried.",
     paramsSchema: {},
     callback: async () => await listStorybooks(),
   },
   {
     name: "list-components",
-    description: "Returns a list of all components registered in the specified Storybook instance.",
-    paramsSchema: {
-      storybookKey: z.string().describe("Unique key identifying the target Storybook instance."),
-    },
+    description: "Lists all components registered within a specified Storybook instance.",
+    paramsSchema: { storybookKey: storybookKeySchema },
     callback: async ({ storybookKey }) => await listComponents({ storybookKey }),
+  },
+  {
+    name: "get-component-usage",
+    description:
+      "Retrieves usage examples and documentation for a specific component in a given Storybook instance.",
+    paramsSchema: {
+      storybookKey: storybookKeySchema,
+      componentId: z
+        .string()
+        .describe("The unique story ID of the component whose usage details are to be retrieved."),
+    },
+    callback: async ({ storybookKey, componentId }) => {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Usage details for ${componentId} in ${storybookKey} will be here.`,
+          },
+        ],
+      };
+    },
   },
 ];
