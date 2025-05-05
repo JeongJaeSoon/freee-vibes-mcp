@@ -7,13 +7,13 @@ type Response = {
 
 export const listStorybooks = async (): Promise<Response> => {
   try {
-    const path = `${process.cwd()}/sources`;
-    const storybooks = await fs.readdir(path);
+    const sourcesPath = `${process.env.WORKSPACE_ROOT}/sources`;
+    const storybooks = await fs.readdir(sourcesPath);
 
     const content: Response["content"] = [];
 
     for (const storybook of storybooks) {
-      const indexJsonPath = `${path}/${storybook}/storybook-static/index.json`;
+      const indexJsonPath = `${sourcesPath}/${storybook}/storybook-static/index.json`;
       try {
         await fs.access(indexJsonPath);
         content.push({

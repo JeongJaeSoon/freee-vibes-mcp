@@ -1,6 +1,11 @@
+import path from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { TOOLS_DEFINITIONS } from "./tools/definition.js";
+
+// Set workspace root environment variable
+process.env.WORKSPACE_ROOT = process.env.WORKSPACE_ROOT || path.resolve(process.cwd());
+console.info(`Workspace root: ${process.env.WORKSPACE_ROOT}`);
 
 // Create an MCP server
 export const server = new McpServer({

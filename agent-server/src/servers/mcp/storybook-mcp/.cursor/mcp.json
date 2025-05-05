@@ -2,7 +2,10 @@
   "mcpServers": {
     "storybook-mcp-node": {
       "command": "/Users/dev-soon/.local/share/mise/installs/node/22.15.0/bin/node",
-      "args": ["/Users/dev-soon/workspace/sample/devpulse-agent/agent-server/src/servers/mcp/storybook-mcp/build/index.js"]
+      "args": ["/Users/dev-soon/workspace/sample/devpulse-agent/agent-server/src/servers/mcp/storybook-mcp/build/index.js"],
+      "env": {
+        "WORKSPACE_ROOT": "/Users/dev-soon/workspace/sample/devpulse-agent/agent-server/src/servers/mcp/storybook-mcp"
+      }
     }
   }
 }
