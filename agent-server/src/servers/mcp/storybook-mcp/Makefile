@@ -30,7 +30,7 @@ docker-clean: docker-stop
 node-init:
 	@echo "Initializing Node environment..."
 	@mkdir -p .cursor
-	@echo '{\n  "mcpServers": {\n    "storybook-mcp-node": {\n      "command": "$(NODE_PATH)",\n      "args": ["$(WORKSPACE_PATH)/build/index.js"]\n    }\n  }\n}' > .cursor/mcp.json
+	@echo '{\n  "mcpServers": {\n    "storybook-mcp-node": {\n      "command": "$(NODE_PATH)",\n      "args": ["$(WORKSPACE_PATH)/build/index.js"],\n      "env": {\n        "WORKSPACE_ROOT": "$(WORKSPACE_PATH)"\n      }\n    }\n  }\n}' > .cursor/mcp.json
 	@echo "Installing dependencies..."
 	@bun install
 	@echo "Building the server..."
@@ -40,7 +40,7 @@ node-init:
 docker-init:
 	@echo "Initializing Docker environment..."
 	@mkdir -p .cursor
-	@echo '{\n  "mcpServers": {\n    "storybook-mcp-docker": {\n      "command": "docker",\n      "args": [\n        "run",\n        "-i",\n        "--rm",\n        "storybook-mcp"\n      ]\n    }\n  }\n}' > .cursor/mcp.json
+	@echo '{\n  "mcpServers": {\n    "storybook-mcp-docker": {\n      "command": "docker",\n      "args": [\n        "run",\n        "-i",\n        "--rm",\n        "storybook-mcp"\n      ],\n      "env": {\n        "WORKSPACE_ROOT": "$(WORKSPACE_PATH)"\n      }\n    }\n  }\n}' > .cursor/mcp.json
 	@echo "Building Docker image..."
 	@make docker-build
 	@echo "Docker environment initialization complete!"

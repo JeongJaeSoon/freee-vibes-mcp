@@ -11,8 +11,8 @@ type Response = {
 
 export const listComponents = async ({ storybookKey }: Request): Promise<Response> => {
   try {
-    const storybookDirname = `${process.cwd()}/sources/${storybookKey}`;
-    const components = await getComponents(storybookDirname);
+    const storybookPath = `${process.env.WORKSPACE_ROOT}/sources/${storybookKey}`;
+    const components = await getComponents(storybookPath);
 
     return {
       content: [{ type: "text", text: JSON.stringify(components, null, 2) }],
