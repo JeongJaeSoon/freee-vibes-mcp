@@ -1,3 +1,6 @@
+import { ErrorCode, McpError } from "@modelcontextprotocol/sdk/types.js";
+import { getComponents } from "../api/getComponents";
+
 type Request = {
   storybookKey: string;
 };
@@ -7,7 +10,15 @@ type Response = {
 };
 
 export const listComponents = async ({ storybookKey }: Request): Promise<Response> => {
-  return {
-    content: [{ type: "text", text: `Hello, ${storybookKey}!` }],
-  };
+  try {
+    const path = `${process.cwd()}/sources/${storybookKey}/storybook-static/index.json`;
+    const components = await getComponents(path);
+
+    return {
+      content: [{ type: "text", text: JSON.stringify(components, null, 2) }],
+    };
+  } catch (error) {
+    console.error("Error fetching components:", error);
+    throw new McpError(ErrorCode.InternalError, "Failed to list components");
+  }
 };
