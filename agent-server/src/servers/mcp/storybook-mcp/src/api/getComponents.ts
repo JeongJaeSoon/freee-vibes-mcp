@@ -1,14 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { StoryIndex } from "storybook/internal/types";
-
-type Components = {
-  id: string;
-  name: string;
-  importPath: string;
-  variants: { id: string; name: string }[];
-}[];
-
+import type { Components } from "../types";
 export const getComponents = async (storybookDirname: string) => {
   try {
     const storybookStaticFilePath = `${storybookDirname}/storybook-static/index.json`;

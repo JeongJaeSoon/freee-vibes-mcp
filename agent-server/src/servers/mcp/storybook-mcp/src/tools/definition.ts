@@ -1,6 +1,7 @@
 import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { type ZodRawShape, z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
+import { getComponentUsage } from "./get-component-usage";
 import { listComponents } from "./list-components";
 import { listStorybooks } from "./list-storybooks";
 
@@ -38,15 +39,7 @@ export const TOOLS_DEFINITIONS: ToolDefinition[] = [
         .string()
         .describe("The unique story ID of the component whose usage details are to be retrieved."),
     },
-    callback: async ({ storybookKey, componentId }) => {
-      return {
-        content: [
-          {
-            type: "text",
-            text: `Usage details for ${componentId} in ${storybookKey} will be here.`,
-          },
-        ],
-      };
-    },
+    callback: async ({ storybookKey, componentId }) =>
+      await getComponentUsage({ storybookKey, componentId }),
   },
 ];
