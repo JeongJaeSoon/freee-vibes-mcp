@@ -6,3 +6,10 @@ export type Component = {
 };
 
 export type Components = Component[];
+
+export type ComponentUsage = {
+  componentId: string;
+  variantId: string;
+  name: string;
+  usage: string;
+};

@@ -38,8 +38,14 @@ export const TOOLS_DEFINITIONS: ToolDefinition[] = [
       componentId: z
         .string()
         .describe("The unique story ID of the component whose usage details are to be retrieved."),
+      variantId: z
+        .string()
+        .optional()
+        .describe(
+          "The unique ID of the variant whose usage details are to be retrieved. If not provided, all variants will be retrieved."
+        ),
     },
-    callback: async ({ storybookKey, componentId }) =>
-      await getComponentUsage({ storybookKey, componentId }),
+    callback: async ({ storybookKey, componentId, variantId }) =>
+      await getComponentUsage({ storybookKey, componentId, variantId }),
   },
 ];
