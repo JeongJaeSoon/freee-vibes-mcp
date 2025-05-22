@@ -2,6 +2,7 @@ import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { weatherTool } from '../tools';
+import { slackSearchAgent } from './slackAgent';
 
 const memory = new Memory();
 
@@ -25,3 +26,5 @@ export const weatherAgent = new Agent({
   tools: { weatherTool },
   memory,
 });
+
+export { slackSearchAgent };
